@@ -1,0 +1,38 @@
+footer {
+  display: flex;
+  color: $white;
+  font-size: 0.8rem;
+  justify-content: space-between;
+  background-color: $color-1;
+  padding: 20px 5%;
+  height: 85px;
+
+  .logo {
+    display: flex;
+    align-items: center;
+    img {
+      width: 40px;
+      height: 40px;
+    }
+    p {
+      margin-left: 10px;
+    }
+  }
+
+  ul {
+    display: flex;
+    height: 40px;
+    align-items: center;
+    gap: 10px;
+  }
+
+  @media screen and (max-width: 600px) {
+    .logo {
+      width: 100%;
+      justify-content: center;
+    }
+    ul {
+      display: none;
+    }
+  }
+}
