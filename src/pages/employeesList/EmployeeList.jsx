@@ -1,7 +1,7 @@
 import React from 'react';
 
 const EmployeeList = () => {
-  return <div>page with the list of employees</div>;
+  return <main>page with the list of employees</main>;
 };
 
 export default EmployeeList;

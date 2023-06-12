@@ -37,7 +37,7 @@ $white: #ffffff;
   }
 
   &:focus-visible {
-    outline: solid 2px $color-2;
+    outline: solid 4px $color-1;
   }
 }
 
@@ -45,26 +45,36 @@ body {
   font-family: $font-500;
   background-color: $white;
   color: $color-3;
-
-  .wrapper {
-    margin: 0 100px;
-    min-height: calc(100vh - 112px - 40px - 209px);
-  }
-
-  @media screen and (max-width: 1036px) {
-    .wrapper {
-      margin: 0 5%;
-    }
-  }
-
-  @media screen and (max-width: 700px) {
-    .wrapper {
-      margin: 0 5%;
-      min-height: calc(100vh - 209px);
-    }
-  }
 }
 
 main {
-  min-height: calc(100vh - 85px);
+  min-height: calc(100vh - 240px);
+  margin: 0 5%;
 }
+
+
+button,
+.btn {
+  font-family: $font-500;
+  font-size: 1.1rem;
+  border-radius: 40px;
+  color: $white;
+  background: $color-1;
+  transition: 0.2s ease-in-out;
+
+  &:hover {
+    background: $color-4;
+  }
+
+  a {
+    display: block;
+  padding: 20px 40px;
+    text-align: center;
+    &:visited {
+      color: $white;
+    }
+  }
+}
+ a:visited{
+    color: $color-3
+ }

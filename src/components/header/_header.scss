@@ -1,0 +1,45 @@
+header {
+  height: 100px;
+  padding: 0 5%;
+  box-shadow: $color-3 0 0 7px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 1.5rem;
+    font-family: $font-700;
+    img {
+      height: 70px;
+      width: 70px;
+    }
+  }
+
+  ul {
+    display: flex;
+    gap: 15px;
+    font-size: 1.2rem;
+  }
+
+  a {
+    position: relative;
+  }
+
+  li:hover {
+    font-weight: bold;
+  }
+
+  li .nav-active:after {
+    content: '';
+    position: absolute;
+    top: 24px;
+    left: 0;
+    background: $color-1;
+    height: 2px;
+    width: 100%;
+  }
+
+}

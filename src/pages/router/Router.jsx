@@ -4,10 +4,12 @@ import Home from '../home/Home';
 import EmployeeAdd from '../employeeAdd/EmployeeAdd';
 import EmployeeList from '../employeesList/EmployeeList';
 import Footer from '../../components/footer/Footer';
+import Header from '../../components/header/Header';
 
 const Router = () => {
   return (
     <BrowserRouter>
+      <Header />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/add" element={<EmployeeAdd />} />

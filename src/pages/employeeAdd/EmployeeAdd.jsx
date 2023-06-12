@@ -2,9 +2,9 @@ import React from 'react';
 
 const EmployeeAdd = () => {
     return (
-        <div>
+        <main>
             page add employee
-        </div>
+        </main>
     );
 };
 
