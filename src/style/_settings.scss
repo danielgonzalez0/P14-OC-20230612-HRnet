@@ -20,6 +20,7 @@ $color-2: #588157;
 $color-3: #3a5a40;
 $color-4: #344e41;
 $color-5: #dad7cd;
+$color-6: #f7f4ec;
 $white: #ffffff;
 
 * {
@@ -37,7 +38,7 @@ $white: #ffffff;
   }
 
   &:focus-visible {
-    outline: solid 4px $color-1;
+    outline: solid 4px $color-4;
   }
 }
 
@@ -49,9 +50,9 @@ body {
 
 main {
   min-height: calc(100vh - 240px);
-  margin: 0 5%;
+  margin: 20px 5%;
+  // margin: 20px 10%;
 }
-
 
 button,
 .btn {
@@ -68,13 +69,13 @@ button,
 
   a {
     display: block;
-  padding: 20px 40px;
+    padding: 20px 40px;
     text-align: center;
     &:visited {
       color: $white;
     }
   }
 }
- a:visited{
-    color: $color-3
- }
+a:visited {
+  color: $color-3;
+}
