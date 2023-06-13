@@ -33,11 +33,13 @@ const Table = () => {
     ],
     []
   );
-  const [globalFilter, setGlobalFilter] = useState('');
   const [selectFilter, setSelectFilter] = useState(10);
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+  const { getTableProps, getTableBodyProps, headerGroups, state, setGlobalFilter, rows, prepareRow } =
     useTable({ columns, data }, useGlobalFilter);
+    
+  const { globalFilter } = state;
+
 
   return (
     <div className="list-container">
@@ -59,9 +61,9 @@ const Table = () => {
           <label>Search : </label>
           <input
             type="text"
-            value={globalFilter}
+            value={globalFilter || ''}
             onChange={(e) => setGlobalFilter(e.target.value)}
-            placeholder='keywords'
+            placeholder="keywords"
           />
         </div>
       </div>
@@ -80,16 +82,20 @@ const Table = () => {
             ))}
           </thead>
           <tbody {...getTableBodyProps()}>
-            {rows.map((row) => {
-              prepareRow(row);
-              return (
-                <tr {...row.getRowProps()}>
-                  {row.cells.map((cell) => (
-                    <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                  ))}
-                </tr>
-              );
-            })}
+            {rows.length > 0 ? (
+              rows.map((row) => {
+                prepareRow(row);
+                return (
+                  <tr {...row.getRowProps()}>
+                    {row.cells.map((cell) => (
+                      <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                    ))}
+                  </tr>
+                );
+              })
+            ) : (
+              <tr className='no-match'>No matching records found</tr>
+            )}
           </tbody>
         </table>
       </div>
