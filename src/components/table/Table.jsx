@@ -1,6 +1,6 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import mockData from '../../assets/data/data.json';
-import { useGlobalFilter, useTable } from 'react-table';
+import { useGlobalFilter, useTable, usePagination } from 'react-table';
 import { dateParser } from '../../utils/utils';
 
 const Table = () => {
@@ -33,13 +33,24 @@ const Table = () => {
     ],
     []
   );
-  const [selectFilter, setSelectFilter] = useState(10);
 
-  const { getTableProps, getTableBodyProps, headerGroups, state, setGlobalFilter, rows, prepareRow } =
-    useTable({ columns, data }, useGlobalFilter);
-    
-  const { globalFilter } = state;
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    state,
+    setGlobalFilter,
+    page,
+    nextPage,
+    previousPage,
+    canNextPage,
+    canPreviousPage,
+    pageOptions,
+    setPageSize,
+    prepareRow,
+  } = useTable({ columns, data }, useGlobalFilter, usePagination);
 
+  const { globalFilter, pageIndex, pageSize } = state;
 
   return (
     <div className="list-container">
@@ -47,8 +58,8 @@ const Table = () => {
         <div className="filter-entries-container">
           <span>show: </span>
           <select
-            value={selectFilter}
-            onChange={(e) => setSelectFilter(e.target.value)}
+            value={pageSize}
+            onChange={(e) => setPageSize(e.target.value)}
           >
             <option value={10}>10</option>
             <option value={25}>25</option>
@@ -81,9 +92,9 @@ const Table = () => {
               </tr>
             ))}
           </thead>
-          <tbody {...getTableBodyProps()}>
-            {rows.length > 0 ? (
-              rows.map((row) => {
+          {page.length > 0 && (
+            <tbody {...getTableBodyProps()}>
+              {page.map((row) => {
                 prepareRow(row);
                 return (
                   <tr {...row.getRowProps()}>
@@ -92,13 +103,41 @@ const Table = () => {
                     ))}
                   </tr>
                 );
-              })
-            ) : (
-              <tr className='no-match'>No matching records found</tr>
-            )}
-          </tbody>
+              })}
+            </tbody>
+          )}
         </table>
+        {page.length === 0 && (
+          <p className="no-match">No matching records found</p>
+        )}
       </div>
+      {page.length > 0 && (
+        <div className="footer-list-container">
+          <div className="footer-list-entries-container">
+            Page {pageIndex + 1} of {pageOptions.length}
+          </div>
+          <div className="footer-list-pagination-container">
+            {pageIndex > 0 && (
+              <button
+                onClick={() => previousPage()}
+                disabled={!canPreviousPage}
+                className="btn-pagination"
+              >
+                Previous
+              </button>
+            )}
+            {pageIndex + 1 < pageOptions.length && (
+              <button
+                onClick={() => nextPage()}
+                disabled={!canNextPage}
+                className="btn-pagination"
+              >
+                Next
+              </button>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

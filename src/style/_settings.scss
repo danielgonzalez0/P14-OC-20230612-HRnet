@@ -79,3 +79,14 @@ button,
 a:visited {
   color: $color-3;
 }
+
+button.btn-pagination {
+  background: $color-6;
+  border-radius: 5px;
+  padding: 10px 20px;
+  color: $color-3;
+  &:hover {
+    background: $color-3;
+    color: $color-6 ;
+  }
+}
