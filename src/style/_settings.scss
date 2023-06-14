@@ -81,12 +81,24 @@ a:visited {
 }
 
 button.btn-pagination {
+  cursor: pointer;
   background: $color-6;
   border-radius: 5px;
   padding: 10px 20px;
   color: $color-3;
   &:hover {
     background: $color-3;
-    color: $color-6 ;
+    color: $color-6;
   }
+}
+
+// button.btn-pagination.active-page{
+//   background: $color-1;
+// }
+
+button[disabled],
+button[disabled]:hover {
+  cursor: default;
+  background-color: rgba($color-6, 0.5);
+  color: rgba($color-3, 0.5);
 }

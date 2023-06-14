@@ -46,11 +46,15 @@ const Table = () => {
     canNextPage,
     canPreviousPage,
     pageOptions,
+    gotoPage,
+    pageCount,
     setPageSize,
     prepareRow,
   } = useTable({ columns, data }, useGlobalFilter, usePagination);
 
   const { globalFilter, pageIndex, pageSize } = state;
+
+  console.log(pageOptions, pageIndex, pageCount, gotoPage);
 
   return (
     <div className="list-container">
@@ -117,24 +121,37 @@ const Table = () => {
             Page {pageIndex + 1} of {pageOptions.length}
           </div>
           <div className="footer-list-pagination-container">
-            {pageIndex > 0 && (
-              <button
-                onClick={() => previousPage()}
-                disabled={!canPreviousPage}
-                className="btn-pagination"
-              >
-                Previous
-              </button>
-            )}
-            {pageIndex + 1 < pageOptions.length && (
-              <button
-                onClick={() => nextPage()}
-                disabled={!canNextPage}
-                className="btn-pagination"
-              >
-                Next
-              </button>
-            )}
+            <button
+              onClick={() => previousPage()}
+              disabled={!canPreviousPage}
+              className="btn-pagination"
+            >
+              Previous
+            </button>
+            {pageOptions.map((p, index) => {
+              if (pageIndex > p - 2 && pageIndex < p + 2) {
+                return (
+                  <button
+                    key={index}
+                    className={
+                      pageIndex === p
+                        ? 'btn-pagination active-page'
+                        : 'btn-pagination'
+                    }
+                    onClick={() => gotoPage(p)}
+                  >
+                    {p + 1}
+                  </button>
+                );
+              } else return null;
+            })}
+            <button
+              onClick={() => nextPage()}
+              disabled={!canNextPage}
+              className="btn-pagination"
+            >
+              Next
+            </button>
           </div>
         </div>
       )}
