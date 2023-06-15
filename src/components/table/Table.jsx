@@ -1,6 +1,11 @@
 import React, { useMemo } from 'react';
 import mockData from '../../assets/data/data.json';
-import { useGlobalFilter, useTable, usePagination } from 'react-table';
+import {
+  useGlobalFilter,
+  useTable,
+  usePagination,
+  useSortBy,
+} from 'react-table';
 import { dateParser } from '../../utils/utils';
 
 const Table = () => {
@@ -14,15 +19,21 @@ const Table = () => {
       {
         Header: 'Date of Birth',
         accessor: 'dateOfBirth',
-        Cell: ({ value }) => {
-          return dateParser(value);
+        Cell: ({ value }) => dateParser(value),
+        disableFilters: true,
+        sortType: (a, b) => {
+          return (
+            new Date(b.values.dateOfBirth) - new Date(a.values.dateOfBirth)
+          );
         },
       },
       {
         Header: 'Start Date',
         accessor: 'startDate',
-        Cell: ({ value }) => {
-          return dateParser(value);
+        Cell: ({ value }) => dateParser(value),
+        disableFilters: true,
+        sortType: (a, b) => {
+          return new Date(b.values.startDate) - new Date(a.values.startDate);
         },
       },
       { Header: 'Street', accessor: 'address' },
@@ -47,14 +58,11 @@ const Table = () => {
     canPreviousPage,
     pageOptions,
     gotoPage,
-    pageCount,
     setPageSize,
     prepareRow,
-  } = useTable({ columns, data }, useGlobalFilter, usePagination);
+  } = useTable({ columns, data }, useGlobalFilter, useSortBy, usePagination);
 
   const { globalFilter, pageIndex, pageSize } = state;
-
-  console.log(pageOptions, pageIndex, pageCount, gotoPage);
 
   return (
     <div className="list-container">
@@ -89,8 +97,15 @@ const Table = () => {
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map((column) => (
-                  <th {...column.getHeaderProps()}>
+                  <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                     {column.render('Header')}
+                    <span className="sort-icon">
+                      {column.isSorted
+                        ? column.isSortedDesc
+                          ? '▼'
+                          : '▲'
+                        : '▼▲'}
+                    </span>
                   </th>
                 ))}
               </tr>
@@ -129,7 +144,12 @@ const Table = () => {
               Previous
             </button>
             {pageOptions.map((p, index) => {
-              if (pageIndex > p - 2 && pageIndex < p + 2) {
+              if (
+                (pageIndex > p - 2 && pageIndex < p + 2) ||
+                (p < 3 && pageIndex < 2) ||
+                (pageOptions.length - 4 < p &&
+                  pageOptions.length - 1 === pageIndex)
+              ) {
                 return (
                   <button
                     key={index}

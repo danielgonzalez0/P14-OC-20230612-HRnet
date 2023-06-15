@@ -22,6 +22,7 @@ $color-4: #344e41;
 $color-5: #dad7cd;
 $color-6: #f7f4ec;
 $white: #ffffff;
+$red: #ef4444;
 
 * {
   margin: 0;
@@ -62,6 +63,7 @@ button,
   color: $white;
   background: $color-1;
   transition: 0.2s ease-in-out;
+  padding: 20px 40px;
 
   &:hover {
     background: $color-4;
@@ -69,7 +71,6 @@ button,
 
   a {
     display: block;
-    padding: 20px 40px;
     text-align: center;
     &:visited {
       color: $white;
@@ -92,13 +93,16 @@ button.btn-pagination {
   }
 }
 
-// button.btn-pagination.active-page{
-//   background: $color-1;
-// }
-
 button[disabled],
 button[disabled]:hover {
   cursor: default;
   background-color: rgba($color-6, 0.5);
   color: rgba($color-3, 0.5);
+}
+
+.error-message {
+  display: block;
+  color: $red;
+  min-height: 24px;
+  font-size: 0.8rem
 }

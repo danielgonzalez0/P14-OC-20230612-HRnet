@@ -1,0 +1,60 @@
+.form-container {
+  width: 100%;
+  padding: 30px 40px;
+  border: solid 1px $color-3;
+  margin: 40px auto;
+  border-radius: 5px;
+  box-shadow: $color-5 0 10px 15px -3px;
+  max-width: 980px;
+  margin-left: 0;
+
+  @media screen and (min-width: 780px) {
+    .inputs, fieldset {
+      display: grid;
+      grid-template-columns: 50% 50%;
+      gap: 10px;
+    }
+  }
+}
+//end form container
+fieldset {
+  border-top: solid 1px $color-1;
+  border-bottom: solid 1px $color-1;
+  padding: 20px 0;
+  legend {
+    margin: 0 20px;
+    padding: 0 10px;
+  }
+}
+
+.btn-container {
+  padding: 40px 0 0 0;
+  display: flex;
+  justify-content: center;
+}
+
+.input-container {
+  p,
+  label {
+    display: block;
+    height: 24px;
+  }
+}
+
+.form-input {
+  font-family: $font-400;
+  font-size: 1rem;
+  width: 100%;
+  background: $color-6;
+  border: solid 1px $color-5;
+  border-radius: 5px;
+  padding: 10px 20px;
+  color: $color-3;
+  &:focus-visible {
+    outline: solid 2px $color-3;
+  }
+  &::placeholder {
+    color: $color-1;
+    font-style: italic;
+  }
+}
