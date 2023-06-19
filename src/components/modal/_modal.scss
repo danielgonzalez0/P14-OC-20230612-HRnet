@@ -1,0 +1,21 @@
+.modal-container {
+  background: rgba($color-6, 1);
+  padding: 10px;
+  font-size: 0.8 rem;
+  color: $color-1;
+  border-radius: 5px;
+  position: absolute;
+  top: -120%;
+  right: 5%;
+  opacity: 0;
+  
+  transform: scaleY(0) translateY(50%);
+  animation: modalOpen 0.4s ease-in-out forwards;
+}
+
+@keyframes modalOpen {
+    100%{
+        opacity: 1;
+        transform: scaleY(1) translateY(0);
+    }
+}

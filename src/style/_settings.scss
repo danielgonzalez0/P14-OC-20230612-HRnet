@@ -57,6 +57,7 @@ main {
 
 button,
 .btn {
+  cursor: pointer;
   font-family: $font-500;
   font-size: 1.1rem;
   border-radius: 40px;
@@ -104,5 +105,9 @@ button[disabled]:hover {
   display: block;
   color: $red;
   min-height: 24px;
-  font-size: 0.8rem
+  font-size: 0.8rem;
+}
+
+.relative {
+  position: relative;
 }
