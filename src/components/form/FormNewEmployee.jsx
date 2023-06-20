@@ -5,17 +5,19 @@ import statesData from '../../assets/data/statesData';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import Modal from '../modal/Modal';
-import { minMaxDate } from '../../utils/utils';
+import { dateParser, minMaxDate } from '../../utils/utils';
+import { useDispatch } from 'react-redux';
+import { addUser } from '../../redux/users.slice';
 
 const schema = yup.object({
-  firstName: yup
+  first_name: yup
     .string('input must be a string')
     .required('first name is required')
     .matches(
       /^[A-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/,
       'invalid name format: hover ? for more details'
     ),
-  lastName: yup
+  last_name: yup
     .string('input must be a string')
     .required('first name is required')
     .matches(
@@ -35,7 +37,7 @@ const schema = yup.object({
     .min(minMaxDate(67 - 18, 'substract'))
     .max(new Date().toDateString(), 'you cannot select a date in the future'),
   department: yup.string('must be a string').required('department is required'),
-  street: yup.string('must be a string').required('street is required'),
+  address: yup.string('must be a string').required('street is required'),
   city: yup.string('must be a string').required('city is required'),
   state: yup.string('must be a string').required('state is required'),
   zipCode: yup
@@ -48,15 +50,16 @@ const schema = yup.object({
 
 const FormNewEmployee = () => {
   const [states, setStates] = useState([]);
+  const dispatch = useDispatch();
 
   const form = useForm({
     defaultValues: {
-      firstName: 'John',
-      lastName: 'McCLane',
+      first_name: 'John',
+      last_name: 'McCLane',
       dateOfBirth: new Date(1980, 6, 10).toISOString().slice(0, 10),
       startDate: new Date(2000, 8, 20).toISOString().slice(0, 10),
       department: 'Sales',
-      street: '77 Brooklyn',
+      address: '77 Brooklyn',
       city: 'New York',
       state: 'New York',
       zipCode: 501,
@@ -72,6 +75,14 @@ const FormNewEmployee = () => {
   //direclty in the input in the render
 
   const handleSubmitForm = (data) => {
+    const uid = Date.now();
+    data = {
+      ...data,
+      dateOfBirth: dateParser(data.dateOfBirth),
+      startDate: dateParser(data.startDate),
+      id: uid,
+    };
+    dispatch(addUser(data));
     console.log('form submitted', data);
   };
 
@@ -98,7 +109,7 @@ const FormNewEmployee = () => {
               autoComplete="none"
               placeholder="ex: John"
               //hook-react-form : destructuring syntax
-              {...register('firstName', {
+              {...register('first_name', {
                 // required: 'first name is required',
                 // pattern: {
                 //   value: /^[A-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/,
@@ -123,7 +134,7 @@ const FormNewEmployee = () => {
               autoComplete="none"
               placeholder="ex: McClane"
               //hook-react-form : destructuring syntax
-              {...register('lastName')}
+              {...register('last_name')}
               type="text"
             />
             <span className="error-message">{errors.lastName?.message}</span>
@@ -177,7 +188,7 @@ const FormNewEmployee = () => {
             <input
               type="text"
               id="street"
-              {...register('street')}
+              {...register('address')}
               className="form-input"
               autoComplete="none"
               placeholder="ex: 77 Massachusetts Avenue"

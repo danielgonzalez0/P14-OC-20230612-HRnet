@@ -1,5 +1,4 @@
-import React, { useMemo } from 'react';
-import mockData from '../../assets/data/data.json';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   useGlobalFilter,
   useTable,
@@ -7,9 +6,16 @@ import {
   useSortBy,
 } from 'react-table';
 import { dateParser } from '../../utils/utils';
+import { useSelector } from 'react-redux';
 
 const Table = () => {
-  const data = useMemo(() => mockData, []);
+  const [dataImport, setDataImport] = useState([]);
+  const users = useSelector((state) => state.employees);
+
+  useEffect(() => {
+    setDataImport(users);
+  }, [users]);
+  const data = useMemo(() => dataImport, [dataImport]);
   const columns = useMemo(
     () => [
       // header – this is the column's name that will be displayed to help identify each column.
