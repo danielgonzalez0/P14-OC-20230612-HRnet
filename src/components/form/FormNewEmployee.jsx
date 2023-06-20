@@ -5,6 +5,7 @@ import statesData from '../../assets/data/statesData';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import Modal from '../modal/Modal';
+import { minMaxDate } from '../../utils/utils';
 
 const schema = yup.object({
   firstName: yup
@@ -21,6 +22,28 @@ const schema = yup.object({
       /^[A-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/,
       'invalid name format: hover ? for more details'
     ),
+  dateOfBirth: yup
+    .date()
+    .required('required')
+    .typeError('a valid date is required')
+    .max(minMaxDate(18, 'substract'), 'you must be at least 18')
+    .min(minMaxDate(67, 'substract'), 'you must not be older than 67'),
+  startDate: yup
+    .date()
+    .required('a valid date is required')
+    .typeError('a valid date is required')
+    .min(minMaxDate(67 - 18, 'substract'))
+    .max(new Date().toDateString(), 'you cannot select a date in the future'),
+  department: yup.string('must be a string').required('department is required'),
+  street: yup.string('must be a string').required('street is required'),
+  city: yup.string('must be a string').required('city is required'),
+  state: yup.string('must be a string').required('state is required'),
+  zipCode: yup
+    .number('must be a number')
+    .required('zip code is required')
+    .min(501, 'zip code must be between 501 and 99950')
+    .max(99950, 'zip code must be between 501 and 99950')
+    .typeError('zip code must be between 501 and 99950'),
 });
 
 const FormNewEmployee = () => {
@@ -28,15 +51,15 @@ const FormNewEmployee = () => {
 
   const form = useForm({
     defaultValues: {
-      firstName: '',
-      lastName: '',
-      dateOfBirth: new Date().toLocaleDateString(),
-      startDate: new Date(),
-      department: '',
-      street: '',
-      city: '',
-      state: '',
-      zipCode: 0,
+      firstName: 'John',
+      lastName: 'McCLane',
+      dateOfBirth: new Date(1980, 6, 10).toISOString().slice(0, 10),
+      startDate: new Date(2000, 8, 20).toISOString().slice(0, 10),
+      department: 'Sales',
+      street: '77 Brooklyn',
+      city: 'New York',
+      state: 'New York',
+      zipCode: 501,
     },
     mode: 'all',
     resolver: yupResolver(schema),
@@ -91,7 +114,9 @@ const FormNewEmployee = () => {
             <span className="error-message">{errors.firstName?.message}</span>
           </div>
           <div className="input-container relative">
-            <label htmlFor="lastName">Last name <Modal/></label>
+            <label htmlFor="lastName">
+              Last name <Modal />
+            </label>
             <input
               id="lastName"
               className="form-input"
@@ -112,10 +137,9 @@ const FormNewEmployee = () => {
                 valueAsDate: true,
               })}
               className="form-input"
-              required
               autoComplete="none"
             />
-            <span className="error-message"></span>
+            <span className="error-message">{errors.dateOfBirth?.message}</span>
           </div>
           <div className="input-container">
             <label htmlFor="startDate">Start Date</label>
@@ -126,10 +150,9 @@ const FormNewEmployee = () => {
                 valueAsDate: true,
               })}
               className="form-input"
-              required
               autoComplete="none"
             />
-            <span className="error-message"></span>
+            <span className="error-message">{errors.startDate?.message}</span>
           </div>
           <div className="input-container">
             <label htmlFor="department">Department</label>
@@ -137,7 +160,6 @@ const FormNewEmployee = () => {
               {...register('department')}
               id="department"
               className="form-input"
-              required
             >
               <option value="Sales">Sales</option>
               <option value="Marketing">Marketing</option>
@@ -145,7 +167,7 @@ const FormNewEmployee = () => {
               <option value="Human Ressources">Human Ressources</option>
               <option value="Legal">Legal</option>
             </select>
-            <span className="error-message"></span>
+            <span className="error-message">{errors.department?.message}</span>
           </div>
         </div>
         <fieldset className="address-inputs">
@@ -157,11 +179,10 @@ const FormNewEmployee = () => {
               id="street"
               {...register('street')}
               className="form-input"
-              required
               autoComplete="none"
               placeholder="ex: 77 Massachusetts Avenue"
             />
-            <span className="error-message"></span>
+            <span className="error-message">{errors.street?.message}</span>
           </div>
           <div className="input-container">
             <label htmlFor="city">City</label>
@@ -170,27 +191,21 @@ const FormNewEmployee = () => {
               id="city"
               {...register('city')}
               className="form-input"
-              required
               autoComplete="none"
               placeholder="ex: New York"
             />
-            <span className="error-message"></span>
+            <span className="error-message">{errors.city?.message}</span>
           </div>
           <div className="input-container">
             <label htmlFor="state">State</label>
-            <select
-              {...register('state')}
-              id="state"
-              className="form-input"
-              required
-            >
+            <select {...register('state')} id="state" className="form-input">
               {states.map((state, index) => (
                 <option key={index} value={state.abbreviation}>
                   {state.name}
                 </option>
               ))}
             </select>
-            <span className="error-message"></span>
+            <span className="error-message">{errors.state?.message}</span>
           </div>
           <div className="input-container">
             <label htmlFor="zipCode">Zip Code</label>
@@ -205,9 +220,8 @@ const FormNewEmployee = () => {
               min={501}
               max={99950}
               placeholder="501 to 99950"
-              required
             />
-            <span className="error-message"></span>
+            <span className="error-message">{errors.zipCode?.message}</span>
           </div>
         </fieldset>
         <div className="btn-container">

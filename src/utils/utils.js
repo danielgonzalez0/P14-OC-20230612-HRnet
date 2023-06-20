@@ -7,4 +7,25 @@ function dateParser(string) {
   return newDate;
 }
 
-export { dateParser };
+/**
+ * create a min or max date depending of a number of years and date.now()
+ * @param {number} yearNum number of years to add or remove
+ * @param {string} type keywords are "add" or "substract"
+ * @returns a dynamic date calculated depending on today and a number of years
+ */
+function minMaxDate(yearNum, type) {
+  const today = new Date();
+  const day = today.getDate();
+  const month = today.getMonth();
+  const year = today.getFullYear();
+  let newYear;
+  if (type === 'add') {
+    newYear = year + yearNum;
+  } else if (type === 'substract') {
+    newYear = year - yearNum;
+  }
+  let date = new Date(newYear, month, day).toDateString();
+  return date;
+}
+
+export { dateParser, minMaxDate };
