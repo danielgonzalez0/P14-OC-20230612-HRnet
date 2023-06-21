@@ -66,7 +66,7 @@ const FormNewEmployee = ({ dataEmployee }) => {
       department: 'Sales',
       address: '77 Brooklyn',
       city: 'New York',
-      state: 'New York',
+      state: 'NY',
       zipCode: 501,
     },
 
@@ -105,7 +105,6 @@ const FormNewEmployee = ({ dataEmployee }) => {
 
   useEffect(() => {
     if (dataEmployee) {
-      console.log(convertLocaldateInUTC(dataEmployee[0].dateOfBirth));
       setValue('first_name', `${dataEmployee[0].first_name}`);
       setValue('last_name', `${dataEmployee[0].last_name}`);
       setValue(
@@ -120,17 +119,17 @@ const FormNewEmployee = ({ dataEmployee }) => {
           .toISOString()
           .slice(0, 10)
       );
-      setValue('department', `${dataEmployee[0].department}`);
+      setValue('department', dataEmployee[0].department);
       setValue('address', `${dataEmployee[0].address}`);
       setValue('city', `${dataEmployee[0].city}`);
-      setValue('state', `${dataEmployee[0].state}`);
+      setValue('state', dataEmployee[0].state);
       setValue('zipCode', dataEmployee[0].zipCode);
     }
     setStates(statesData);
     if (isSubmitSuccessful) {
       reset();
     }
-  }, [isSubmitSuccessful, reset, dataEmployee]);
+  }, [isSubmitSuccessful, reset, dataEmployee, setValue]);
 
   return (
     <div className="form-container">
@@ -211,11 +210,14 @@ const FormNewEmployee = ({ dataEmployee }) => {
               id="department"
               className="form-input"
             >
-              <option value="Sales">Sales</option>
-              <option value="Marketing">Marketing</option>
-              <option value="Engineering">Engineering</option>
-              <option value="Human Ressources">Human Ressources</option>
-              <option value="Legal">Legal</option>
+              <option value="Sales" label="Sales"></option>
+              <option value="Marketing" label="Marketing"></option>
+              <option value="Engineering" label="Engineering"></option>
+              <option
+                value="Human Ressources"
+                label="Human Ressources"
+              ></option>
+              <option value="Legal" label="Legal"></option>
             </select>
             <span className="error-message">{errors.department?.message}</span>
           </div>
@@ -249,11 +251,26 @@ const FormNewEmployee = ({ dataEmployee }) => {
           <div className="input-container">
             <label htmlFor="state">State</label>
             <select {...register('state')} id="state" className="form-input">
-              {states.map((state, index) => (
-                <option key={index} value={state.abbreviation}>
-                  {state.name}
-                </option>
-              ))}
+              {states.map((state, index) => {
+                if (isModified && dataEmployee[0].state === state.value) {
+                  return (
+                    <option
+                      key={index}
+                      value={state.value}
+                      label={state.label}
+                      selected
+                    ></option>
+                  );
+                } else {
+                  return (
+                    <option
+                      key={index}
+                      value={state.value}
+                      label={state.label}
+                    ></option>
+                  );
+                }
+              })}
             </select>
             <span className="error-message">{errors.state?.message}</span>
           </div>

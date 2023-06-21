@@ -24,6 +24,8 @@ export const usersSlice = createSlice({
           employee.zipCode = action.payload.zipCode;
 
           return employee;
+        } else {
+          return employee;
         }
       });
     },

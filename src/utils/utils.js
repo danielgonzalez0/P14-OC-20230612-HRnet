@@ -1,3 +1,5 @@
+import statesData from '../assets/data/statesData';
+
 function dateParser(string) {
   let newDate = new Date(string).toLocaleDateString('en-US', {
     year: 'numeric',
@@ -27,7 +29,11 @@ function minMaxDate(yearNum, type) {
   let date = new Date(newYear, month, day).toDateString();
   return date;
 }
-
+/**
+ * convert a local date in UTC date for datePicker
+ * @param {object} date local date to convert
+ * @returns a utc date + 1
+ */
 function convertLocaldateInUTC(date) {
   const localeDate = new Date(date);
   const day = localeDate.getDate() + 1;
@@ -37,4 +43,12 @@ function convertLocaldateInUTC(date) {
   return UTCDate;
 }
 
-export { dateParser, minMaxDate, convertLocaldateInUTC };
+function getStateName(stateAbbreviation) {
+  const state = statesData.filter(
+    (state) => state.value === stateAbbreviation
+  );
+  console.log(state);
+  return state[0].label;
+}
+
+export { dateParser, minMaxDate, convertLocaldateInUTC, getStateName};

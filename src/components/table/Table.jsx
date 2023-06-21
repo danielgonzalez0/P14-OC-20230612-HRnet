@@ -13,7 +13,6 @@ import { setIsSelected } from '../../redux/formStatus.slice';
 const Table = () => {
   const [dataImport, setDataImport] = useState([]);
   const users = useSelector((state) => state.employees);
-  const isSelected = useSelector((state)=> state.status.isSelected)
   const dispatch = useDispatch()
   const [employeeSelected, setEmployedSelected] = useState();
 
