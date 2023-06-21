@@ -28,4 +28,13 @@ function minMaxDate(yearNum, type) {
   return date;
 }
 
-export { dateParser, minMaxDate };
+function convertLocaldateInUTC(date) {
+  const localeDate = new Date(date);
+  const day = localeDate.getDate() + 1;
+  const month = localeDate.getMonth();
+  const year = localeDate.getFullYear();
+  let UTCDate = new Date(year, month, day).toDateString();
+  return UTCDate;
+}
+
+export { dateParser, minMaxDate, convertLocaldateInUTC };

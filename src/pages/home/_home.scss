@@ -57,7 +57,8 @@
         align-items: center;
         margin-top: 0;
         .btn {
-          width: 230px;
+          min-width: 230px;
+          text-align: center;
         }
       }
     }

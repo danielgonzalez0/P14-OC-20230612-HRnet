@@ -5,9 +5,13 @@ import statesData from '../../assets/data/statesData';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import Modal from '../modal/Modal';
-import { dateParser, minMaxDate } from '../../utils/utils';
-import { useDispatch } from 'react-redux';
-import { addUser } from '../../redux/users.slice';
+import {
+  convertLocaldateInUTC,
+  dateParser,
+  minMaxDate,
+} from '../../utils/utils';
+import { useDispatch, useSelector } from 'react-redux';
+import { addUser, editUser } from '../../redux/users.slice';
 
 const schema = yup.object({
   first_name: yup
@@ -48,8 +52,9 @@ const schema = yup.object({
     .typeError('zip code must be between 501 and 99950'),
 });
 
-const FormNewEmployee = () => {
+const FormNewEmployee = ({ dataEmployee }) => {
   const [states, setStates] = useState([]);
+  const isModified = useSelector((state) => state.status.isModified);
   const dispatch = useDispatch();
 
   const form = useForm({
@@ -64,10 +69,11 @@ const FormNewEmployee = () => {
       state: 'New York',
       zipCode: 501,
     },
+
     mode: 'all',
     resolver: yupResolver(schema),
   });
-  const { register, control, handleSubmit, formState, reset } = form;
+  const { register, setValue, control, handleSubmit, formState, reset } = form;
   const { errors, isSubmitSuccessful } = formState;
   //hook-react-form: complete syntax
   // const { name, ref, onChange, onBlur } = register('firstName');
@@ -75,23 +81,56 @@ const FormNewEmployee = () => {
   //direclty in the input in the render
 
   const handleSubmitForm = (data) => {
-    const uid = Date.now();
-    data = {
-      ...data,
-      dateOfBirth: dateParser(data.dateOfBirth),
-      startDate: dateParser(data.startDate),
-      id: uid,
-    };
-    dispatch(addUser(data));
-    console.log('form submitted', data);
+    if (isModified) {
+      data = {
+        ...data,
+        dateOfBirth: dateParser(data.dateOfBirth),
+        startDate: dateParser(data.startDate),
+        id: dataEmployee[0].id,
+      };
+      dispatch(editUser(data));
+      console.log('form modified', data);
+    } else {
+      const uid = Date.now();
+      data = {
+        ...data,
+        dateOfBirth: dateParser(data.dateOfBirth),
+        startDate: dateParser(data.startDate),
+        id: uid,
+      };
+      dispatch(addUser(data));
+      console.log('form submitted', data);
+    }
   };
 
   useEffect(() => {
+    if (dataEmployee) {
+      console.log(convertLocaldateInUTC(dataEmployee[0].dateOfBirth));
+      setValue('first_name', `${dataEmployee[0].first_name}`);
+      setValue('last_name', `${dataEmployee[0].last_name}`);
+      setValue(
+        'dateOfBirth',
+        new Date(convertLocaldateInUTC(dataEmployee[0].dateOfBirth))
+          .toISOString()
+          .slice(0, 10)
+      );
+      setValue(
+        'startDate',
+        new Date(convertLocaldateInUTC(dataEmployee[0].startDate))
+          .toISOString()
+          .slice(0, 10)
+      );
+      setValue('department', `${dataEmployee[0].department}`);
+      setValue('address', `${dataEmployee[0].address}`);
+      setValue('city', `${dataEmployee[0].city}`);
+      setValue('state', `${dataEmployee[0].state}`);
+      setValue('zipCode', dataEmployee[0].zipCode);
+    }
     setStates(statesData);
     if (isSubmitSuccessful) {
       reset();
     }
-  }, [isSubmitSuccessful, reset]);
+  }, [isSubmitSuccessful, reset, dataEmployee]);
 
   return (
     <div className="form-container">
@@ -122,7 +161,7 @@ const FormNewEmployee = () => {
               // onChange={onChange}
               // onBlur={onBlur}
             />
-            <span className="error-message">{errors.firstName?.message}</span>
+            <span className="error-message">{errors.first_name?.message}</span>
           </div>
           <div className="input-container relative">
             <label htmlFor="lastName">
@@ -137,7 +176,7 @@ const FormNewEmployee = () => {
               {...register('last_name')}
               type="text"
             />
-            <span className="error-message">{errors.lastName?.message}</span>
+            <span className="error-message">{errors.last_name?.message}</span>
           </div>
           <div className="input-container">
             <label htmlFor="dateOfBirth">Date of birth</label>
@@ -145,7 +184,7 @@ const FormNewEmployee = () => {
               type="date"
               id="dateOfBirth"
               {...register('dateOfBirth', {
-                valueAsDate: true,
+                valueAsDate: false,
               })}
               className="form-input"
               autoComplete="none"
@@ -236,7 +275,11 @@ const FormNewEmployee = () => {
           </div>
         </fieldset>
         <div className="btn-container">
-          <input type="submit" value="send" className="btn" />
+          <input
+            type="submit"
+            value={dataEmployee ? 'modify' : 'send'}
+            className="btn"
+          />
         </div>
       </form>
       <DevTool control={control} />

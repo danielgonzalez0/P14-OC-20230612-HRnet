@@ -2,7 +2,6 @@ import React from 'react';
 import backgroundImage from './background.png';
 import { NavLink } from 'react-router-dom';
 
-
 const Home = () => {
   return (
     <main className="home-page">
@@ -17,12 +16,12 @@ const Home = () => {
         </h2>
         <p>Please select an action:</p>
         <ul className="btn-container">
-          <li className="btn">
-            <NavLink to="/add">Add employee</NavLink>
-          </li>
-          <li className="btn">
-            <NavLink to="/list">View employees</NavLink>
-          </li>
+          <NavLink to="/add">
+            <li className="btn">Add employee</li>
+          </NavLink>
+          <NavLink to="/list">
+            <li className="btn">View employees</li>
+          </NavLink>
         </ul>
       </div>
     </main>
