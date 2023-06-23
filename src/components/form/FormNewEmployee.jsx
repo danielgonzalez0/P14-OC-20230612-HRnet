@@ -57,13 +57,15 @@ const FormNewEmployee = ({ dataEmployee }) => {
   const isModified = useSelector((state) => state.status.isModified);
   const dispatch = useDispatch();
 
+  const [formSelectedState, setFormSelectedState] = useState();
+
   const form = useForm({
     defaultValues: {
       first_name: 'John',
       last_name: 'McCLane',
       dateOfBirth: new Date(1980, 6, 10).toISOString().slice(0, 10),
       startDate: new Date(2000, 8, 20).toISOString().slice(0, 10),
-      department: 'Sales',
+      department: 'Legal',
       address: '77 Brooklyn',
       city: 'New York',
       state: 'NY',
@@ -75,6 +77,10 @@ const FormNewEmployee = ({ dataEmployee }) => {
   });
   const { register, setValue, control, handleSubmit, formState, reset } = form;
   const { errors, isSubmitSuccessful } = formState;
+
+  // const Controller = ({ control, register, name, rules, render }) => {
+  //   return render();
+  // };
   //hook-react-form: complete syntax
   // const { name, ref, onChange, onBlur } = register('firstName');
   //hook-react-form : destructuring syntax
@@ -104,7 +110,9 @@ const FormNewEmployee = ({ dataEmployee }) => {
   };
 
   useEffect(() => {
+    setStates(statesData);
     if (dataEmployee) {
+      setFormSelectedState(dataEmployee[0].state);
       setValue('first_name', `${dataEmployee[0].first_name}`);
       setValue('last_name', `${dataEmployee[0].last_name}`);
       setValue(
@@ -124,8 +132,9 @@ const FormNewEmployee = ({ dataEmployee }) => {
       setValue('city', `${dataEmployee[0].city}`);
       setValue('state', dataEmployee[0].state);
       setValue('zipCode', dataEmployee[0].zipCode);
+    } else {
+      setFormSelectedState('NY');
     }
-    setStates(statesData);
     if (isSubmitSuccessful) {
       reset();
     }
@@ -147,18 +156,7 @@ const FormNewEmployee = ({ dataEmployee }) => {
               autoComplete="none"
               placeholder="ex: John"
               //hook-react-form : destructuring syntax
-              {...register('first_name', {
-                // required: 'first name is required',
-                // pattern: {
-                //   value: /^[A-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/,
-                //   message: 'invalid name format: press ? for more informations',
-                // },
-              })}
-              //hook-react-form: complete syntax
-              // name={name}
-              // ref={ref}
-              // onChange={onChange}
-              // onBlur={onBlur}
+              {...register('first_name')}
             />
             <span className="error-message">{errors.first_name?.message}</span>
           </div>
@@ -209,6 +207,9 @@ const FormNewEmployee = ({ dataEmployee }) => {
               {...register('department')}
               id="department"
               className="form-input"
+              onChange={(e) => {
+                setValue('department', e.target.value);
+              }}
             >
               <option value="Sales" label="Sales"></option>
               <option value="Marketing" label="Marketing"></option>
@@ -248,32 +249,33 @@ const FormNewEmployee = ({ dataEmployee }) => {
             />
             <span className="error-message">{errors.city?.message}</span>
           </div>
-          <div className="input-container">
-            <label htmlFor="state">State</label>
-            <select {...register('state')} id="state" className="form-input">
-              {states.map((state, index) => {
-                if (isModified && dataEmployee[0].state === state.value) {
+          {formSelectedState  && (
+            <div className="input-container">
+              <label htmlFor="state">State</label>
+              <select
+                {...register('state')}
+                id="state"
+                className="form-input"
+                defaultValue={formSelectedState}
+                onChange={(e) => {
+                  setFormSelectedState(e.target.value);
+                  setValue('state', e.target.value);
+                }}
+              >
+                {states.map((state, index) => {
                   return (
                     <option
                       key={index}
                       value={state.value}
                       label={state.label}
-                      selected
                     ></option>
                   );
-                } else {
-                  return (
-                    <option
-                      key={index}
-                      value={state.value}
-                      label={state.label}
-                    ></option>
-                  );
-                }
-              })}
-            </select>
-            <span className="error-message">{errors.state?.message}</span>
-          </div>
+                })}
+              </select>
+              <span className="error-message">{errors.state?.message}</span>
+            </div>
+          )}
+
           <div className="input-container">
             <label htmlFor="zipCode">Zip Code</label>
             <input

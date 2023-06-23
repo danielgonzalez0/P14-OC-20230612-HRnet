@@ -43,7 +43,6 @@ const TableBtn = ({ employeeSelected }) => {
                 <button
                   className="btn-pagination"
                   onClick={() => {
-                    console.log(employee);
                     dispatch(setIsModified(true));
                   }}
                 >
