@@ -4,7 +4,6 @@ import { DevTool } from '@hookform/devtools';
 import statesData from '../../assets/data/statesData';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import Modal from '../modal/Modal';
 import {
   convertLocaldateInUTC,
   dateParser,
@@ -12,6 +11,16 @@ import {
 } from '../../utils/utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { addUser, editUser } from '../../redux/users.slice';
+import InputFirstName from './InputFirstName';
+import InputLastName from './InputLastName';
+import InputDateOfBirth from './InputDateOfBirth';
+import InputStartDate from './InputStartDate';
+import InputAddress from './InputAddress';
+import InputCity from './InputCity';
+import InputZipCode from './InputZipCode';
+import SelectDepartment from './SelectDepartment';
+import SelectState from './SelectState';
+import { setIsModified, setIsSelected } from '../../redux/formStatus.slice';
 
 const schema = yup.object({
   first_name: yup
@@ -23,7 +32,7 @@ const schema = yup.object({
     ),
   last_name: yup
     .string('input must be a string')
-    .required('first name is required')
+    .required('last name is required')
     .matches(
       /^[A-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/,
       'invalid name format: hover ? for more details'
@@ -103,6 +112,8 @@ const FormNewEmployee = ({ dataEmployee }) => {
         id: dataEmployee[0].id,
       };
       dispatch(editUser(data));
+      dispatch(setIsSelected(false));
+      dispatch(setIsModified(false));
       console.log('form modified', data);
     } else {
       const uid = Date.now();
@@ -133,154 +144,31 @@ const FormNewEmployee = ({ dataEmployee }) => {
     <div className="form-container">
       <form onSubmit={handleSubmit(handleSubmitForm)} noValidate>
         <div className="inputs">
-          <div className="input-container relative">
-            <label htmlFor="firstName">
-              First name
-              <Modal />
-            </label>
-            <input
-              type="text"
-              id="firstName"
-              className="form-input"
-              autoComplete="none"
-              placeholder="ex: John"
-              //hook-react-form : destructuring syntax
-              {...register('first_name')}
-            />
-            <span className="error-message">{errors.first_name?.message}</span>
-          </div>
-          <div className="input-container relative">
-            <label htmlFor="lastName">
-              Last name <Modal />
-            </label>
-            <input
-              id="lastName"
-              className="form-input"
-              autoComplete="none"
-              placeholder="ex: McClane"
-              //hook-react-form : destructuring syntax
-              {...register('last_name')}
-              type="text"
-            />
-            <span className="error-message">{errors.last_name?.message}</span>
-          </div>
-          <div className="input-container">
-            <label htmlFor="dateOfBirth">Date of birth</label>
-            <input
-              type="date"
-              id="dateOfBirth"
-              {...register('dateOfBirth', {
-                valueAsDate: false,
-              })}
-              className="form-input"
-              autoComplete="none"
-            />
-            <span className="error-message">{errors.dateOfBirth?.message}</span>
-          </div>
-          <div className="input-container">
-            <label htmlFor="startDate">Start Date</label>
-            <input
-              type="date"
-              id="startDate"
-              {...register('startDate', {
-                valueAsDate: true,
-              })}
-              className="form-input"
-              autoComplete="none"
-            />
-            <span className="error-message">{errors.startDate?.message}</span>
-          </div>
-          <div className="input-container">
-            <label htmlFor="department">Department</label>
-            <select
-              {...register('department')}
-              id="department"
-              className="form-input"
-              onChange={(e) => {
-                setValue('department', e.target.value);
-              }}
-            >
-              <option value="Sales" label="Sales"></option>
-              <option value="Marketing" label="Marketing"></option>
-              <option value="Engineering" label="Engineering"></option>
-              <option
-                value="Human Ressources"
-                label="Human Ressources"
-              ></option>
-              <option value="Legal" label="Legal"></option>
-            </select>
-            <span className="error-message">{errors.department?.message}</span>
-          </div>
+          <InputFirstName register={register} errors={errors} />
+          <InputLastName register={register} errors={errors} />
+          <InputDateOfBirth register={register} errors={errors} />
+          <InputStartDate register={register} errors={errors} />
+          <SelectDepartment
+            register={register}
+            errors={errors}
+            setValue={setValue}
+          />
         </div>
         <fieldset className="address-inputs">
           <legend>Address</legend>
-          <div className="input-container">
-            <label htmlFor="street">Street</label>
-            <input
-              type="text"
-              id="street"
-              {...register('address')}
-              className="form-input"
-              autoComplete="none"
-              placeholder="ex: 77 Massachusetts Avenue"
-            />
-            <span className="error-message">{errors.street?.message}</span>
-          </div>
-          <div className="input-container">
-            <label htmlFor="city">City</label>
-            <input
-              type="text"
-              id="city"
-              {...register('city')}
-              className="form-input"
-              autoComplete="none"
-              placeholder="ex: New York"
-            />
-            <span className="error-message">{errors.city?.message}</span>
-          </div>
+          <InputAddress register={register} errors={errors} />
+          <InputCity register={register} errors={errors} />
           {formSelectedState && (
-            <div className="input-container">
-              <label htmlFor="state">State</label>
-              <select
-                {...register('state')}
-                id="state"
-                className="form-input"
-                defaultValue={formSelectedState}
-                onChange={(e) => {
-                  setFormSelectedState(e.target.value);
-                  setValue('state', e.target.value);
-                }}
-              >
-                {states.map((state, index) => {
-                  return (
-                    <option
-                      key={index}
-                      value={state.value}
-                      label={state.label}
-                    ></option>
-                  );
-                })}
-              </select>
-              <span className="error-message">{errors.state?.message}</span>
-            </div>
-          )}
-
-          <div className="input-container">
-            <label htmlFor="zipCode">Zip Code</label>
-            <input
-              type="number"
-              {...register('zipCode', {
-                valueAsNumber: true,
-              })}
-              id="zipCode"
-              className="form-input"
-              autoComplete="none"
-              min={501}
-              max={99950}
-              placeholder="501 to 99950"
+            <SelectState
+              register={register}
+              errors={errors}
+              setValue={setValue}
+              setFormSelectedState={setFormSelectedState}
+              formSelectedState={formSelectedState}
+              states={states}
             />
-            <span className="error-message">{errors.zipCode?.message}</span>
-          </div>
+          )}
+          <InputZipCode register={register} errors={errors} />
         </fieldset>
         <div className="btn-container">
           <input
