@@ -61,15 +61,31 @@ const FormNewEmployee = ({ dataEmployee }) => {
 
   const form = useForm({
     defaultValues: {
-      first_name: 'John',
-      last_name: 'McCLane',
-      dateOfBirth: new Date(1980, 6, 10).toISOString().slice(0, 10),
-      startDate: new Date(2000, 8, 20).toISOString().slice(0, 10),
-      department: 'Legal',
-      address: '77 Brooklyn',
-      city: 'New York',
-      state: 'NY',
-      zipCode: 501,
+      first_name: `${dataEmployee ? dataEmployee[0].first_name : 'John'}`,
+      last_name: `${dataEmployee ? dataEmployee[0].last_name : 'McLane'}`,
+      dateOfBirth: `${
+        dataEmployee
+          ? new Date(convertLocaldateInUTC(dataEmployee[0].dateOfBirth))
+              .toISOString()
+              .slice(0, 10)
+          : new Date(convertLocaldateInUTC(new Date(1980, 6, 10)))
+              .toISOString()
+              .slice(0, 10)
+      }`,
+      startDate: `${
+        dataEmployee
+          ? new Date(convertLocaldateInUTC(dataEmployee[0].startDate))
+              .toISOString()
+              .slice(0, 10)
+          : new Date(convertLocaldateInUTC(new Date(2000, 8, 20)))
+              .toISOString()
+              .slice(0, 10)
+      }`,
+      department: `${dataEmployee ? dataEmployee[0].department : 'Legal'}`,
+      address: `${dataEmployee ? dataEmployee[0].address : '77 Brooklyn'}`,
+      city: `${dataEmployee ? dataEmployee[0].city : 'New York'}`,
+      state: `${dataEmployee ? dataEmployee[0].state : 'NY'}`,
+      zipCode: `${dataEmployee ? dataEmployee[0].zipCode : 501}`,
     },
 
     mode: 'all',
@@ -77,14 +93,6 @@ const FormNewEmployee = ({ dataEmployee }) => {
   });
   const { register, setValue, control, handleSubmit, formState, reset } = form;
   const { errors, isSubmitSuccessful } = formState;
-
-  // const Controller = ({ control, register, name, rules, render }) => {
-  //   return render();
-  // };
-  //hook-react-form: complete syntax
-  // const { name, ref, onChange, onBlur } = register('firstName');
-  //hook-react-form : destructuring syntax
-  //direclty in the input in the render
 
   const handleSubmitForm = (data) => {
     if (isModified) {
@@ -113,25 +121,6 @@ const FormNewEmployee = ({ dataEmployee }) => {
     setStates(statesData);
     if (dataEmployee) {
       setFormSelectedState(dataEmployee[0].state);
-      setValue('first_name', `${dataEmployee[0].first_name}`);
-      setValue('last_name', `${dataEmployee[0].last_name}`);
-      setValue(
-        'dateOfBirth',
-        new Date(convertLocaldateInUTC(dataEmployee[0].dateOfBirth))
-          .toISOString()
-          .slice(0, 10)
-      );
-      setValue(
-        'startDate',
-        new Date(convertLocaldateInUTC(dataEmployee[0].startDate))
-          .toISOString()
-          .slice(0, 10)
-      );
-      setValue('department', dataEmployee[0].department);
-      setValue('address', `${dataEmployee[0].address}`);
-      setValue('city', `${dataEmployee[0].city}`);
-      setValue('state', dataEmployee[0].state);
-      setValue('zipCode', dataEmployee[0].zipCode);
     } else {
       setFormSelectedState('NY');
     }
@@ -249,7 +238,7 @@ const FormNewEmployee = ({ dataEmployee }) => {
             />
             <span className="error-message">{errors.city?.message}</span>
           </div>
-          {formSelectedState  && (
+          {formSelectedState && (
             <div className="input-container">
               <label htmlFor="state">State</label>
               <select
