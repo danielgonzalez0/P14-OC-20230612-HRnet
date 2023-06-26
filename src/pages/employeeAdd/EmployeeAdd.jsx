@@ -5,7 +5,7 @@ const EmployeeAdd = () => {
   return (
     <main>
       <h1>Add a new employee</h1>
-      <FormNewEmployee/>
+      <FormNewEmployee />
     </main>
   );
 };

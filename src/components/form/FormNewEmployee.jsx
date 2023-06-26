@@ -21,6 +21,7 @@ import InputZipCode from './InputZipCode';
 import SelectDepartment from './SelectDepartment';
 import SelectState from './SelectState';
 import { setIsModified, setIsSelected } from '../../redux/formStatus.slice';
+import { Modal } from 'library-react-modal';
 
 const schema = yup.object({
   first_name: yup
@@ -63,6 +64,7 @@ const schema = yup.object({
 
 const FormNewEmployee = ({ dataEmployee }) => {
   const [states, setStates] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
   const isModified = useSelector((state) => state.status.isModified);
   const dispatch = useDispatch();
 
@@ -124,6 +126,7 @@ const FormNewEmployee = ({ dataEmployee }) => {
         id: uid,
       };
       dispatch(addUser(data));
+      setIsOpen(true)
       console.log('form submitted', data);
     }
   };
@@ -141,45 +144,53 @@ const FormNewEmployee = ({ dataEmployee }) => {
   }, [isSubmitSuccessful, reset, dataEmployee, setValue]);
 
   return (
-    <div className="form-container">
-      <form onSubmit={handleSubmit(handleSubmitForm)} noValidate>
-        <div className="inputs">
-          <InputFirstName register={register} errors={errors} />
-          <InputLastName register={register} errors={errors} />
-          <InputDateOfBirth register={register} errors={errors} />
-          <InputStartDate register={register} errors={errors} />
-          <SelectDepartment
-            register={register}
-            errors={errors}
-            setValue={setValue}
-          />
-        </div>
-        <fieldset className="address-inputs">
-          <legend>Address</legend>
-          <InputAddress register={register} errors={errors} />
-          <InputCity register={register} errors={errors} />
-          {formSelectedState && (
-            <SelectState
+    <>
+      <Modal
+        close={() => setIsOpen(false)}
+        show={isOpen}
+        title={'Form submission:'}
+        content={'Employee created!'}
+      />
+      <div className="form-container">
+        <form onSubmit={handleSubmit(handleSubmitForm)} noValidate>
+          <div className="inputs">
+            <InputFirstName register={register} errors={errors} />
+            <InputLastName register={register} errors={errors} />
+            <InputDateOfBirth register={register} errors={errors} />
+            <InputStartDate register={register} errors={errors} />
+            <SelectDepartment
               register={register}
               errors={errors}
               setValue={setValue}
-              setFormSelectedState={setFormSelectedState}
-              formSelectedState={formSelectedState}
-              states={states}
             />
-          )}
-          <InputZipCode register={register} errors={errors} />
-        </fieldset>
-        <div className="btn-container">
-          <input
-            type="submit"
-            value={dataEmployee ? 'modify' : 'send'}
-            className="btn"
-          />
-        </div>
-      </form>
-      <DevTool control={control} />
-    </div>
+          </div>
+          <fieldset className="address-inputs">
+            <legend>Address</legend>
+            <InputAddress register={register} errors={errors} />
+            <InputCity register={register} errors={errors} />
+            {formSelectedState && (
+              <SelectState
+                register={register}
+                errors={errors}
+                setValue={setValue}
+                setFormSelectedState={setFormSelectedState}
+                formSelectedState={formSelectedState}
+                states={states}
+              />
+            )}
+            <InputZipCode register={register} errors={errors} />
+          </fieldset>
+          <div className="btn-container">
+            <input
+              type="submit"
+              value={dataEmployee ? 'modify' : 'send'}
+              className="btn"
+            />
+          </div>
+        </form>
+        <DevTool control={control} />
+      </div>
+    </>
   );
 };
 
