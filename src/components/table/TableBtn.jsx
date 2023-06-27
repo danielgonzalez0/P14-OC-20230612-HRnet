@@ -1,10 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import FormNewEmployee from '../form/FormNewEmployee';
-import {
-  setIsSelected,
-  setIsModified,
-} from '../../redux/formStatus.slice';
+import { setIsSelected, setIsModified } from '../../redux/formStatus.slice';
 
 const TableBtn = ({ employeeSelected }) => {
   const isSelected = useSelector((state) => state.status.isSelected);
@@ -16,6 +13,25 @@ const TableBtn = ({ employeeSelected }) => {
       (employee) => employee.id === parseInt(employeeSelected)
     )
   );
+
+  const Content = () => {
+    return (
+      <>
+        <p>Do you want: </p>
+        <div className="btn-container btn-wrapper">
+          <button
+            className="btn-pagination"
+            onClick={() => {
+              dispatch(setIsModified(true));
+            }}
+          >
+            modify
+          </button>
+          <button className="btn-pagination">delete</button>
+        </div>
+      </>
+    );
+  };
 
   return (
     isSelected && (

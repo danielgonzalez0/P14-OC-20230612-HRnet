@@ -20,7 +20,11 @@ import InputCity from './InputCity';
 import InputZipCode from './InputZipCode';
 import SelectDepartment from './SelectDepartment';
 import SelectState from './SelectState';
-import { setIsModified, setIsSelected } from '../../redux/formStatus.slice';
+import {
+  setIsModified,
+  setIsSelected,
+  setIsSuccessfull,
+} from '../../redux/formStatus.slice';
 import { Modal } from 'library-react-modal';
 
 const schema = yup.object({
@@ -62,9 +66,8 @@ const schema = yup.object({
     .typeError('zip code must be between 501 and 99950'),
 });
 
-const FormNewEmployee = ({ dataEmployee }) => {
+const FormNewEmployee = ({ dataEmployee, setIsOpen, setEmployeeCreated }) => {
   const [states, setStates] = useState([]);
-  const [isOpen, setIsOpen] = useState(false);
   const isModified = useSelector((state) => state.status.isModified);
   const dispatch = useDispatch();
 
@@ -114,8 +117,9 @@ const FormNewEmployee = ({ dataEmployee }) => {
         id: dataEmployee[0].id,
       };
       dispatch(editUser(data));
-      dispatch(setIsSelected(false));
-      dispatch(setIsModified(false));
+        dispatch(setIsSuccessfull(true));
+    
+      // dispatch(setIsModified(false));
       console.log('form modified', data);
     } else {
       const uid = Date.now();
@@ -126,7 +130,8 @@ const FormNewEmployee = ({ dataEmployee }) => {
         id: uid,
       };
       dispatch(addUser(data));
-      setIsOpen(true)
+      setEmployeeCreated(`${data.first_name} ${data.last_name}`);
+      setIsOpen(true);
       console.log('form submitted', data);
     }
   };
@@ -145,12 +150,22 @@ const FormNewEmployee = ({ dataEmployee }) => {
 
   return (
     <>
-      <Modal
+      {/* <Modal
         close={() => setIsOpen(false)}
         show={isOpen}
-        title={'Form submission:'}
-        content={'Employee created!'}
-      />
+        title={''}
+        content={
+          dataEmployee
+            ? `Employee ${dataEmployee[0].first_name} ${dataEmployee[0].last_name} was modified!`
+            : `Employee ${employeeCreated} was created!`
+        }
+        customClassName={{
+          closeBtn: 'close-modal',
+          modal: 'custom-modal-container',
+          title: '',
+          content: '',
+        }}
+      /> */}
       <div className="form-container">
         <form onSubmit={handleSubmit(handleSubmitForm)} noValidate>
           <div className="inputs">
@@ -188,7 +203,7 @@ const FormNewEmployee = ({ dataEmployee }) => {
             />
           </div>
         </form>
-        <DevTool control={control} />
+        {/* <DevTool control={control} /> */}
       </div>
     </>
   );

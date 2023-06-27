@@ -7,27 +7,32 @@ const Header = () => {
     <header>
       <div className="logo">
         <img src={logo} alt="logo" />
-        <NavLink to="/">Wealth <br/> Health</NavLink>
+        <NavLink to="/">
+          Wealth <br /> Health
+        </NavLink>
       </div>
 
-      <ul>
-        <li>
-          <NavLink
-            to="/add"
-            className={(nav) => (nav.isActive ? 'nav-active' : '')}
-          >
-            Add
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            to="/list"
-            className={(nav) => (nav.isActive ? 'nav-active' : '')}
-          >
-            View
-          </NavLink>
-        </li>
-      </ul>
+      <div className="nav">
+        <p>Employee:</p>
+        <ul>
+          <li>
+            <NavLink
+              to="/add"
+              className={(nav) => (nav.isActive ? 'nav-active' : '')}
+            >
+              Add
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/list"
+              className={(nav) => (nav.isActive ? 'nav-active' : '')}
+            >
+              View
+            </NavLink>
+          </li>
+        </ul>
+      </div>
     </header>
   );
 };

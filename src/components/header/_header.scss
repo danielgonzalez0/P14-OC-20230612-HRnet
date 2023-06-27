@@ -18,6 +18,15 @@ header {
     }
   }
 
+  .nav{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    p{
+      font-size: 1.2rem;
+    }
+  }
+
   ul {
     display: flex;
     gap: 15px;

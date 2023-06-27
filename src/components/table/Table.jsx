@@ -9,12 +9,15 @@ import { dateParser } from '../../utils/utils';
 import { useDispatch, useSelector } from 'react-redux';
 import TableBtn from './TableBtn';
 import { setIsSelected } from '../../redux/formStatus.slice';
+import SelectionModal from './SelectionModal';
+import FormModal from './FormModal';
 
 const Table = () => {
   const [dataImport, setDataImport] = useState([]);
   const users = useSelector((state) => state.employees);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [employeeSelected, setEmployedSelected] = useState();
+  
 
   useEffect(() => {
     setDataImport(users);
@@ -63,7 +66,7 @@ const Table = () => {
               data-id={row.original.id}
               onClick={(e) => {
                 setEmployedSelected(e.target.dataset.id);
-                dispatch(setIsSelected(true))
+                dispatch(setIsSelected(true));
               }}
             />
           );
@@ -99,9 +102,10 @@ const Table = () => {
 
   return (
     <>
-      <TableBtn
-        employeeSelected={employeeSelected}
-      />
+      {/* <TableBtn employeeSelected={employeeSelected} /> */}
+      <SelectionModal employeeSelected={employeeSelected} />
+      <FormModal employeeSelected={employeeSelected} />
+
       <div className="list-container">
         <div className="list-header">
           <div className="filter-entries-container">

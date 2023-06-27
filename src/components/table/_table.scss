@@ -123,61 +123,71 @@ th {
 
 //modal
 
-.btn-modal-container {
-  position: fixed;
-  z-index: 10000;
-  overflow-y: scroll;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(#000000, 0.6);
-  display: flex;
+// .btn-modal-container {
+//   position: fixed;
+//   z-index: 10000;
+//   overflow-y: scroll;
+//   top: 0;
+//   left: 0;
+//   width: 100vw;
+//   height: 100vh;
+//   background: rgba(#000000, 0.6);
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+
+//   .content-container {
+//     position: relative;
+//     padding: 40px;
+//     min-width: 350px;
+//     min-height: 200px;
+//     max-width: 100vw;
+//     max-height: 90vh;
+//     background: $white;
+//     border-radius: 5px;
+//     display: flex;
+//     flex-direction: column;
+//     align-items: center;
+//     justify-content: center;
+//     gap: 10px;
+
+    // .form-container {
+    //   height: 100% !important;
+    //   overflow-y: auto;
+    //   padding: 20px 40px 30px 40px;
+    // }
+
+    // .modal-container {
+    //   top: 5%;
+    //   right: 5%;
+    // }
+  // }
+
+  
+//   .close-modal {
+//     position: absolute;
+//     top: 0;
+//     right: 0;
+//     transform: translate(40%, -40%);
+//     font-size: 1.2rem;
+//     font-family: $font-700;
+//     border-radius: 40px;
+//     padding: 10px 15px;
+//     background: $color-1;
+//     color: $color-3;
+//   }
+// }
+
+//modal inside table
+
+.table-custom-content-modal{
+    display: flex;
   align-items: center;
   justify-content: center;
 
-  .content-container {
-    position: relative;
-    padding: 40px;
-    min-width: 350px;
-    min-height: 200px;
-    max-width: 100vw;
-    max-height: 90vh;
-    background: $white;
-    border-radius: 5px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
+}
 
-    .form-container {
-      height: 100% !important;
-      overflow-y: auto;
-      padding: 20px 40px 30px 40px;
-    }
-
-    .modal-container {
-      top: 5%;
-      right: 5%;
-    }
-  }
-
-  .btn-wrapper {
-    gap: 10px;
-    padding-top: 0;
-  }
-
-  .close-modal {
-    position: absolute;
-    top: 0;
-    right: 0;
-    transform: translate(40%, -40%);
-    font-size: 1.2rem;
-    font-family: $font-700;
-    border-radius: 40px;
-    padding: 10px 15px;
-    background: $color-1;
-    color: $color-3;
-  }
+.btn-wrapper {
+  gap: 10px;
+  padding-top: 0;
 }
