@@ -31,14 +31,14 @@ const SelectionModal = ({ employeeSelected }) => {
           >
             modify
           </button>
-          <button className="btn-pagination">delete</button>
+          <button className="btn-pagination" onClick={()=>dispatch(setIsDeleted(true))}>delete</button>
         </div>
       </>
     );
   };
   return (
     !isModified &&
-    !isDeleted && (
+    !isDeleted && isSelected && (
       <>
         <Modal
           title={'Selected employee:'}

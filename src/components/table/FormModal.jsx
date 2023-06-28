@@ -2,7 +2,6 @@ import React from 'react';
 import { Modal } from 'library-react-modal';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  setIsDeleted,
   setIsModified,
   setIsSelected,
   setIsSuccessfull,
@@ -10,7 +9,6 @@ import {
 import FormNewEmployee from '../form/FormNewEmployee';
 
 const FormModal = ({ employeeSelected }) => {
-  const isSelected = useSelector((state) => state.status.isSelected);
   const isSuccessfull = useSelector((state) => state.status.isSuccessfull);
   const isModified = useSelector((state) => state.status.isModified);
   const dispatch = useDispatch();
@@ -27,9 +25,7 @@ const FormModal = ({ employeeSelected }) => {
           title={'Selected employee: '}
           content={<FormNewEmployee dataEmployee={employee} />}
           close={() => {
-            // dispatch(setIsSelected(false));
             dispatch(setIsModified(false));
-            //  dispatch(setIsDeleted(false));
           }}
           show={isModified}
           customClassName={{

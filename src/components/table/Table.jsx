@@ -7,17 +7,17 @@ import {
 } from 'react-table';
 import { dateParser } from '../../utils/utils';
 import { useDispatch, useSelector } from 'react-redux';
-import TableBtn from './TableBtn';
 import { setIsSelected } from '../../redux/formStatus.slice';
 import SelectionModal from './SelectionModal';
 import FormModal from './FormModal';
+import DeleteModal from './DeleteModal';
+
 
 const Table = () => {
   const [dataImport, setDataImport] = useState([]);
   const users = useSelector((state) => state.employees);
   const dispatch = useDispatch();
   const [employeeSelected, setEmployedSelected] = useState();
-  
 
   useEffect(() => {
     setDataImport(users);
@@ -102,9 +102,9 @@ const Table = () => {
 
   return (
     <>
-      {/* <TableBtn employeeSelected={employeeSelected} /> */}
       <SelectionModal employeeSelected={employeeSelected} />
       <FormModal employeeSelected={employeeSelected} />
+      <DeleteModal employeeSelected={employeeSelected}/>
 
       <div className="list-container">
         <div className="list-header">

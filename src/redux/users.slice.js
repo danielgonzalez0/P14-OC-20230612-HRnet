@@ -10,6 +10,12 @@ export const usersSlice = createSlice({
     addUser: (state, action) => {
       return (state = [...state, action.payload]);
     },
+    deleteUser: (state, action) => {
+      const array = state.filter(
+        (employee) => employee.id !== action.payload
+      );
+      return array;
+    },
     editUser: (state, action) => {
       state = state.map((employee) => {
         if (employee.id === action.payload.id) {
@@ -31,6 +37,6 @@ export const usersSlice = createSlice({
   },
 });
 
-export const { getUsers, addUser, editUser } = usersSlice.actions;
+export const { getUsers, addUser, editUser, deleteUser } = usersSlice.actions;
 
 export default usersSlice.reducer;
