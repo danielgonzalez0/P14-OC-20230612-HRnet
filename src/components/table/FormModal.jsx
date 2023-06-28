@@ -11,6 +11,8 @@ import FormNewEmployee from '../form/FormNewEmployee';
 const FormModal = ({ employeeSelected }) => {
   const isSuccessfull = useSelector((state) => state.status.isSuccessfull);
   const isModified = useSelector((state) => state.status.isModified);
+  const isDeleted = useSelector((state) => state.status.isDeleted);
+  const isSelected = useSelector((state) => state.status.isSelected);
   const dispatch = useDispatch();
   const employee = useSelector((state) =>
     state.employees.filter(
@@ -18,7 +20,7 @@ const FormModal = ({ employeeSelected }) => {
     )
   );
 
-  if (isModified && !isSuccessfull)
+  if (isSelected && !isDeleted && !isSuccessfull)
     return (
       <>
         <Modal
@@ -39,7 +41,7 @@ const FormModal = ({ employeeSelected }) => {
     );
 
 
-  if (isModified && isSuccessfull)
+  if (!isDeleted)
     return (
       <>
         <Modal

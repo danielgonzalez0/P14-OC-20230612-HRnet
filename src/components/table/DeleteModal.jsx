@@ -11,6 +11,8 @@ import { deleteUser } from '../../redux/users.slice';
 const DeleteModal = ({ employeeSelected }) => {
   const isSuccessfull = useSelector((state) => state.status.isSuccessfull);
   const isDeleted = useSelector((state) => state.status.isDeleted);
+  const isModified = useSelector((state) => state.status.isModified);
+  const isSelected = useSelector((state) => state.status.isSelected);
   const dispatch = useDispatch();
   const employee = useSelector((state) =>
     state.employees.filter(
@@ -36,6 +38,7 @@ const DeleteModal = ({ employeeSelected }) => {
           <button
             className="btn-pagination"
             onClick={() => {
+              dispatch(setIsSelected(false));
               dispatch(deleteUser(employee[0].id));
               dispatch(setIsSuccessfull(true));
             }}
@@ -47,7 +50,7 @@ const DeleteModal = ({ employeeSelected }) => {
     );
   };
 
-  if (isDeleted && !isSuccessfull)
+  if (isSelected && !isSuccessfull && !isModified)
     return (
       <>
         <Modal
@@ -67,8 +70,7 @@ const DeleteModal = ({ employeeSelected }) => {
       </>
     );
 
-  if (isDeleted && isSuccessfull)
-    return (
+    if(!isModified) return (
       <>
         <Modal
           close={() => {

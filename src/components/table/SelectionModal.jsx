@@ -16,7 +16,7 @@ const SelectionModal = ({ employeeSelected }) => {
   );
 
   const Content = () => {
-    return (employeeSelected &&
+    return (employeeSelected && employee[0] &&
       <>
         <p>
           {employee[0].first_name} {employee[0].last_name}
@@ -36,29 +36,28 @@ const SelectionModal = ({ employeeSelected }) => {
       </>
     );
   };
-  return (
-    !isModified &&
-    !isDeleted && isSelected && (
-      <>
-        <Modal
-          title={'Selected employee:'}
-          content={<Content />}
-          close={() => {
-            dispatch(setIsSelected(false));
-            dispatch(setIsModified(false));
-            dispatch(setIsDeleted(false));
-          }}
-          show={isSelected}
-          customClassName={{
-            closeBtn: 'close-modal',
-            modal: 'custom-modal-container',
-            title: 'custom-modal-title',
-            content: 'custom-content',
-          }}
-        />
-      </>
-    )
-  );
+
+  if (!isModified && !isDeleted) return (
+        <>
+          <Modal
+            title={'Selected employee:'}
+            content={<Content />}
+            close={() => {
+              dispatch(setIsSelected(false));
+              dispatch(setIsModified(false));
+              dispatch(setIsDeleted(false));
+            }}
+            show={isSelected}
+            customClassName={{
+              closeBtn: 'close-modal',
+              modal: 'custom-modal-container',
+              title: 'custom-modal-title',
+              content: 'custom-content',
+            }}
+          />
+        </>
+      // )
+    );
 };
 
 export default SelectionModal;
