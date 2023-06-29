@@ -23,21 +23,24 @@ const Table = () => {
     setDataImport(users);
   }, [users]);
   const data = useMemo(() => dataImport, [dataImport]);
-  const CustomCell = useCallback(({ row }) => {
-    console.log(row);
-    return (
-      <input
-        type="radio"
-        name="table-radio"
-        id={row.original.id}
-        data-id={row.original.id}
-        onClick={(e) => {
-          setEmployedSelected(e.target.dataset.id);
-          dispatch(setIsSelected(true));
-        }}
-      />
-    );
-  }, [dispatch]);
+  const CustomCell = useCallback(
+    ({ row }) => {
+      console.log(row);
+      return (
+        <input
+          type="radio"
+          name="table-radio"
+          id={row.original.id}
+          data-id={row.original.id}
+          onClick={(e) => {
+            setEmployedSelected(e.target.dataset.id);
+            dispatch(setIsSelected(true));
+          }}
+        />
+      );
+    },
+    [dispatch]
+  );
 
   CustomCell.propTypes = {
     row: PropTypes.object.isRequired,
@@ -164,12 +167,14 @@ const Table = () => {
             </thead>
             {page.length > 0 && (
               <tbody {...getTableBodyProps()}>
-                {page.map((row) => {
+                {page.map((row, index) => {
                   prepareRow(row);
                   return (
-                    <tr {...row.getRowProps()}>
-                      {row.cells.map((cell) => (
-                        <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                    <tr {...row.getRowProps()} key={index}>
+                      {row.cells.map((cell, index) => (
+                        <td {...cell.getCellProps()} key={index}>
+                          {cell.render('Cell')}
+                        </td>
                       ))}
                     </tr>
                   );
