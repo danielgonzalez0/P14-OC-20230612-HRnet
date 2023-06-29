@@ -1,5 +1,6 @@
 import React from 'react';
 import InputForm from './InputForm';
+import PropTypes from "prop-types"
 
 const InputDateOfBirth = ({register, errors}) => {
   return (
@@ -13,10 +14,15 @@ const InputDateOfBirth = ({register, errors}) => {
         isModal={false}
         isAutoComplete={false}
         register={register}
-        errors={errors.dateOfBirth?.message}
+        errors={errors}
       />
     </>
   );
+};
+
+InputDateOfBirth.propTypes = {
+  register: PropTypes.func.isRequired,
+  errors: PropTypes.string,
 };
 
 export default InputDateOfBirth;

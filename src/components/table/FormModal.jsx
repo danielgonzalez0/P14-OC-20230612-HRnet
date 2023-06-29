@@ -7,6 +7,7 @@ import {
   setIsSuccessfull,
 } from '../../redux/formStatus.slice';
 import FormNewEmployee from '../form/FormNewEmployee';
+import PropTypes from 'prop-types'
 
 const FormModal = ({ employeeSelected }) => {
   const isSuccessfull = useSelector((state) => state.status.isSuccessfull);
@@ -41,7 +42,7 @@ const FormModal = ({ employeeSelected }) => {
     );
 
 
-  if (!isDeleted)
+  if (!isDeleted && employee[0])
     return (
       <>
         <Modal
@@ -62,6 +63,10 @@ const FormModal = ({ employeeSelected }) => {
         />
       </>
     );
+};
+
+FormModal.propTypes = {
+  employeeSelected: PropTypes.string,
 };
 
 export default FormModal;

@@ -1,5 +1,6 @@
 import React from 'react';
 import Modal from '../modal/Modal';
+import PropTypes from "prop-types"
 
 const InputForm = ({
   name,
@@ -15,6 +16,8 @@ const InputForm = ({
   min,
   max,
 }) => {
+
+
   return (
     <div className="input-container relative">
       <label htmlFor={label}>
@@ -37,4 +40,18 @@ const InputForm = ({
   );
 };
 
+InputForm.propTypes = {
+  name: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  labelText: PropTypes.string.isRequired,
+  isModal: PropTypes.bool,
+  isAutoComplete: PropTypes.bool,
+  placeholder: PropTypes.string,
+  register: PropTypes.func.isRequired,
+  errors: PropTypes.string,
+  min: PropTypes.number,
+  max: PropTypes.number,
+};
 export default InputForm;

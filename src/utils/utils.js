@@ -1,5 +1,9 @@
-import statesData from '../assets/data/statesData';
 
+/**
+ * Parse a date from string format to a object date
+ * @param {string} string date to parse
+ * @returns a date
+ */
 function dateParser(string) {
   let newDate = new Date(string).toLocaleDateString('en-US', {
     year: 'numeric',
@@ -43,12 +47,4 @@ function convertLocaldateInUTC(date) {
   return UTCDate;
 }
 
-function getStateName(stateAbbreviation) {
-  const state = statesData.filter(
-    (state) => state.value === stateAbbreviation
-  );
-  console.log(state);
-  return state[0].label;
-}
-
-export { dateParser, minMaxDate, convertLocaldateInUTC, getStateName};
+export { dateParser, minMaxDate, convertLocaldateInUTC};

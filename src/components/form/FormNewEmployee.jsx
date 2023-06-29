@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
-import { DevTool } from '@hookform/devtools';
+//import { DevTool } from '@hookform/devtools';
 import statesData from '../../assets/data/statesData';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -20,12 +21,7 @@ import InputCity from './InputCity';
 import InputZipCode from './InputZipCode';
 import SelectDepartment from './SelectDepartment';
 import SelectState from './SelectState';
-import {
-  setIsModified,
-  setIsSelected,
-  setIsSuccessfull,
-} from '../../redux/formStatus.slice';
-import { Modal } from 'library-react-modal';
+import { setIsSuccessfull } from '../../redux/formStatus.slice';
 
 const schema = yup.object({
   first_name: yup
@@ -66,12 +62,13 @@ const schema = yup.object({
     .typeError('zip code must be between 501 and 99950'),
 });
 
+
 const FormNewEmployee = ({ dataEmployee, setIsOpen, setEmployeeCreated }) => {
   const [states, setStates] = useState([]);
   const isModified = useSelector((state) => state.status.isModified);
   const dispatch = useDispatch();
-
   const [formSelectedState, setFormSelectedState] = useState();
+
 
   const form = useForm({
     defaultValues: {
@@ -105,8 +102,9 @@ const FormNewEmployee = ({ dataEmployee, setIsOpen, setEmployeeCreated }) => {
     mode: 'all',
     resolver: yupResolver(schema),
   });
-  const { register, setValue, control, handleSubmit, formState, reset } = form;
+  const { register, setValue, handleSubmit, formState, reset } = form;
   const { errors, isSubmitSuccessful } = formState;
+
 
   const handleSubmitForm = (data) => {
     if (isModified) {
@@ -117,9 +115,7 @@ const FormNewEmployee = ({ dataEmployee, setIsOpen, setEmployeeCreated }) => {
         id: dataEmployee[0].id,
       };
       dispatch(editUser(data));
-        dispatch(setIsSuccessfull(true));
-    
-      // dispatch(setIsModified(false));
+      dispatch(setIsSuccessfull(true));
       console.log('form modified', data);
     } else {
       const uid = Date.now();
@@ -150,50 +146,52 @@ const FormNewEmployee = ({ dataEmployee, setIsOpen, setEmployeeCreated }) => {
 
   return (
     <>
-      {/* <Modal
-        close={() => setIsOpen(false)}
-        show={isOpen}
-        title={''}
-        content={
-          dataEmployee
-            ? `Employee ${dataEmployee[0].first_name} ${dataEmployee[0].last_name} was modified!`
-            : `Employee ${employeeCreated} was created!`
-        }
-        customClassName={{
-          closeBtn: 'close-modal',
-          modal: 'custom-modal-container',
-          title: '',
-          content: '',
-        }}
-      /> */}
       <div className="form-container">
         <form onSubmit={handleSubmit(handleSubmitForm)} noValidate>
           <div className="inputs">
-            <InputFirstName register={register} errors={errors} />
-            <InputLastName register={register} errors={errors} />
-            <InputDateOfBirth register={register} errors={errors} />
-            <InputStartDate register={register} errors={errors} />
+            <InputFirstName
+              register={register}
+              errors={errors.first_name?.message}
+            />
+            <InputLastName
+              register={register}
+              errors={errors.last_name?.message}
+            />
+            <InputDateOfBirth
+              register={register}
+              errors={errors.dateOfBirth?.message}
+            />
+            <InputStartDate
+              register={register}
+              errors={errors.startDate?.message}
+            />
             <SelectDepartment
               register={register}
-              errors={errors}
+              errors={errors.department?.message}
               setValue={setValue}
             />
           </div>
           <fieldset className="address-inputs">
             <legend>Address</legend>
-            <InputAddress register={register} errors={errors} />
-            <InputCity register={register} errors={errors} />
+            <InputAddress
+              register={register}
+              errors={errors.address?.message}
+            />
+            <InputCity register={register} errors={errors.city?.message} />
             {formSelectedState && (
               <SelectState
                 register={register}
-                errors={errors}
+                errors={errors.state?.message}
                 setValue={setValue}
                 setFormSelectedState={setFormSelectedState}
                 formSelectedState={formSelectedState}
                 states={states}
               />
             )}
-            <InputZipCode register={register} errors={errors} />
+            <InputZipCode
+              register={register}
+              errors={errors.zipCode?.message}
+            />
           </fieldset>
           <div className="btn-container">
             <input
@@ -207,6 +205,25 @@ const FormNewEmployee = ({ dataEmployee, setIsOpen, setEmployeeCreated }) => {
       </div>
     </>
   );
+};
+
+FormNewEmployee.propTypes = {
+  dataEmployee: PropTypes.arrayOf(
+    PropTypes.shape({
+      address: PropTypes.string,
+      city: PropTypes.string,
+      dateOfBirth: PropTypes.string,
+      startDate: PropTypes.string,
+      department: PropTypes.string,
+      first_name: PropTypes.string,
+      last_name: PropTypes.string,
+      state: PropTypes.string,
+      id: PropTypes.number,
+      zipCode: PropTypes.number,
+    })
+  ),
+  setIsOpen: PropTypes.func,
+  setEmployeeCreated: PropTypes.func,
 };
 
 export default FormNewEmployee;

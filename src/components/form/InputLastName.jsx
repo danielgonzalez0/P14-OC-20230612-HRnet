@@ -1,5 +1,6 @@
 import React from 'react';
 import InputForm from './InputForm';
+import PropTypes from 'prop-types';
 
 const InputLastName = ({register, errors}) => {
   return (
@@ -14,10 +15,15 @@ const InputLastName = ({register, errors}) => {
         isAutoComplete={false}
         placeholder={'ex: McLane'}
         register={register}
-        errors={errors.last_name?.message}
+        errors={errors}
       />
     </>
   );
+};
+
+InputLastName.propTypes = {
+  register: PropTypes.func.isRequired,
+  errors: PropTypes.string,
 };
 
 export default InputLastName;

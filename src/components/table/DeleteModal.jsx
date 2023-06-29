@@ -7,6 +7,7 @@ import {
   setIsSuccessfull,
 } from '../../redux/formStatus.slice';
 import { deleteUser } from '../../redux/users.slice';
+import PropTypes from 'prop-types'
 
 const DeleteModal = ({ employeeSelected }) => {
   const isSuccessfull = useSelector((state) => state.status.isSuccessfull);
@@ -21,33 +22,34 @@ const DeleteModal = ({ employeeSelected }) => {
   );
 
   const ContentDeleteModal = () => {
-    return (
-      <>
-        <p style={{ textAlign: 'center' }}>
-          {`${employee[0].first_name} ${employee[0].last_name}`}
-        </p>
-        <div className="btn-container btn-wrapper">
-          <button
-            className="btn-pagination"
-            onClick={() => {
-              dispatch(setIsDeleted(false));
-            }}
-          >
-            cancel
-          </button>
-          <button
-            className="btn-pagination"
-            onClick={() => {
-              dispatch(setIsSelected(false));
-              dispatch(deleteUser(employee[0].id));
-              dispatch(setIsSuccessfull(true));
-            }}
-          >
-            delete
-          </button>
-        </div>
-      </>
-    );
+    if (employee[0])
+      return (
+        <>
+          <p style={{ textAlign: 'center' }}>
+            {`${employee[0].first_name} ${employee[0].last_name}`}
+          </p>
+          <div className="btn-container btn-wrapper">
+            <button
+              className="btn-pagination"
+              onClick={() => {
+                dispatch(setIsDeleted(false));
+              }}
+            >
+              cancel
+            </button>
+            <button
+              className="btn-pagination"
+              onClick={() => {
+                dispatch(setIsSelected(false));
+                dispatch(deleteUser(employee[0].id));
+                dispatch(setIsSuccessfull(true));
+              }}
+            >
+              delete
+            </button>
+          </div>
+        </>
+      );
   };
 
   if (isSelected && !isSuccessfull && !isModified)
@@ -70,7 +72,8 @@ const DeleteModal = ({ employeeSelected }) => {
       </>
     );
 
-    if(!isModified) return (
+  if (!isModified)
+    return (
       <>
         <Modal
           close={() => {
@@ -91,5 +94,9 @@ const DeleteModal = ({ employeeSelected }) => {
       </>
     );
 };
+
+DeleteModal.propTypes = {
+  employeeSelected: PropTypes.string
+}
 
 export default DeleteModal;
