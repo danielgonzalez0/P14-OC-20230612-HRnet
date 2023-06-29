@@ -1,70 +1,100 @@
-# Getting Started with Create React App
+<p align="center">
+<img src="https://img.shields.io/badge/VERCEL-Deployed-brightgreen?style=for-the-badge&logo=vercel">
+<img src="https://img.shields.io/badge/Create%20with-React-blue?style=for-the-badge&logo=react">
+<img src="https://img.shields.io/badge/form%20created%20with-REACT%20HOOK%20FORM-EC5990?style=for-the-badge">
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<img src="https://img.shields.io/badge/Table%20created%20with-REACT%20TABLE-3B82F6?style=for-the-badge">
 
-## Available Scripts
+</p>
 
-In the project directory, you can run:
+# Application HRnet with React
 
-### `npm start`
+The project is part of a front-end training course specialising in React delivery by openclassrooms.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+training link : https://openclassrooms.com/fr/paths/516-developpeur-dapplication-javascript-react
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Project goal: Switch a jQuery library to React
 
-### `npm test`
+## Specifications: 
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Make a new version of the "Create Employee" and "Employee List" pages with React.
+- add a state management system (the old  version uses local storage).
+- ensure that everything is consistent in terms of style. 
+- correct the project issues : [click here](https://github.com/OpenClassrooms-Student-Center/P12_Front-end/issues)
 
-### `npm run build`
+initial version of the project: [click here](https://github.com/OpenClassrooms-Student-Center/P12_Front-end)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Version
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+version 1
 
-### `npm run eject`
+### Project Deployment link:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+[link](https://p14-oc-20230612-h-rnet.vercel.app/)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Features
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- react router
+- use redux toolkit to create a global state manager
+- functional components
+- complexe table and form implemented
+- responsive design
+- documentation with JSDoc and proptypes
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Tech Stack
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+**Client:** React, react-router-dom, redux-toolkit, Sass, esLint, Prop-types, react-table, react-hook-form
 
-### Code Splitting
+## Required
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+[![Node.js](https://custom-icon-badges.demolab.com/badge/-Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
 
-### Analyzing the Bundle Size
+[![NPM](https://img.shields.io/badge/-NPM-CC3534?logo=npm&logoColor=white&style=for-the-badge)](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Installation
 
-### Making a Progressive Web App
+### front-end
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+clone project
 
-### Advanced Configuration
+```bash
+  git clone https://github.com/danielgonzalez0/P14-OC-20230612-HRnet.git
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Go to the project directory
 
-### Deployment
+```bash
+  cd P14-OC-20230612-HRnet
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Install dependencies
 
-### `npm run build` fails to minify
+```bash
+  npm install
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+launch server
+
+```bash
+  npm run start
+```
+
+## Screenshots
+
+![HRNet-homepage](https://github.com/danielgonzalez0/P14-OC-20230612-HRnet/assets/86351071/b8305383-f732-4760-9d6a-670d5de38391)
+
+![HRNet-add](https://github.com/danielgonzalez0/P14-OC-20230612-HRnet/assets/86351071/5c4e1392-3ad1-4920-acf0-fac51eabd3d9)
+
+![HRNet-view](https://github.com/danielgonzalez0/P14-OC-20230612-HRnet/assets/86351071/2b65c134-febb-4ea2-b6b0-4ce80aa6830a)
+
+
+## 🚀 About Me
+
+I am currently retraining to become a front-end developer and am taking the Application Developer - JavaScript React course at OpenClassrooms.
+
+The objective of this training is to acquire a specialization in front-end and to consolidate the knowledge that I obtained during my previous training in web development.
+
+The ultimate goal is to find a first position as a junior web developer to perfect my skills and gain more experience.
