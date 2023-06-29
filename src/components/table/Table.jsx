@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   useGlobalFilter,
   useTable,
@@ -11,7 +11,7 @@ import { setIsSelected } from '../../redux/formStatus.slice';
 import SelectionModal from './SelectionModal';
 import FormModal from './FormModal';
 import DeleteModal from './DeleteModal';
-
+import PropTypes from 'prop-types';
 
 const Table = () => {
   const [dataImport, setDataImport] = useState([]);
@@ -23,6 +23,26 @@ const Table = () => {
     setDataImport(users);
   }, [users]);
   const data = useMemo(() => dataImport, [dataImport]);
+  const CustomCell = useCallback(({ row }) => {
+    console.log(row);
+    return (
+      <input
+        type="radio"
+        name="table-radio"
+        id={row.original.id}
+        data-id={row.original.id}
+        onClick={(e) => {
+          setEmployedSelected(e.target.dataset.id);
+          dispatch(setIsSelected(true));
+        }}
+      />
+    );
+  }, [dispatch]);
+
+  CustomCell.propTypes = {
+    row: PropTypes.object.isRequired,
+  };
+
   const columns = useMemo(
     () => [
       // header – this is the column's name that will be displayed to help identify each column.
@@ -57,23 +77,10 @@ const Table = () => {
       {
         id: 'selection',
         Header: 'Selection',
-        Cell: ({ row }) => {
-          return (
-            <input
-              type="radio"
-              name="table-radio"
-              id={row.original.id}
-              data-id={row.original.id}
-              onClick={(e) => {
-                setEmployedSelected(e.target.dataset.id);
-                dispatch(setIsSelected(true));
-              }}
-            />
-          );
-        },
+        Cell: CustomCell,
       },
     ],
-    [dispatch]
+    [CustomCell]
   );
 
   const {
@@ -104,7 +111,7 @@ const Table = () => {
     <>
       <SelectionModal employeeSelected={employeeSelected} />
       <FormModal employeeSelected={employeeSelected} />
-      <DeleteModal employeeSelected={employeeSelected}/>
+      <DeleteModal employeeSelected={employeeSelected} />
 
       <div className="list-container">
         <div className="list-header">
@@ -135,11 +142,12 @@ const Table = () => {
         <div className="table-container">
           <table {...getTableProps()}>
             <thead>
-              {headerGroups.map((headerGroup) => (
-                <tr {...headerGroup.getHeaderGroupProps()}>
-                  {headerGroup.headers.map((column) => (
+              {headerGroups.map((headerGroup, index) => (
+                <tr {...headerGroup.getHeaderGroupProps()} key={index}>
+                  {headerGroup.headers.map((column, index) => (
                     <th
                       {...column.getHeaderProps(column.getSortByToggleProps())}
+                      key={index}
                     >
                       {column.render('Header')}
                       <span className="sort-icon">
