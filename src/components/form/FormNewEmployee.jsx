@@ -49,7 +49,15 @@ const schema = yup.object({
     .required('a valid date is required')
     .typeError('a valid date is required')
     .min(minMaxDate(67 - 18, 'substract'))
-    .max(new Date().toDateString(), 'you cannot select a date in the future'),
+    .max(new Date().toDateString(), 'you cannot select a date in the future')
+    .test(
+      'is-before-date-of-birth',
+      'Start date must be after date of birth',
+      function (value) {
+        const dateOfBirth = this.parent.dateOfBirth;
+        return value > dateOfBirth;
+      }
+    ),
   department: yup.string('must be a string').required('department is required'),
   address: yup.string('must be a string').required('street is required'),
   city: yup.string('must be a string').required('city is required'),
