@@ -16,25 +16,40 @@ import PropTypes from 'prop-types';
 const Table = () => {
   const [dataImport, setDataImport] = useState([]);
   const users = useSelector((state) => state.employees);
+  const isSelected = useSelector((state) => state.status.isSelected);
   const dispatch = useDispatch();
   const [employeeSelected, setEmployedSelected] = useState();
 
   useEffect(() => {
     setDataImport(users);
-  }, [users]);
+     if (!isSelected) {
+       // Recherchez tous les inputs radio avec name="table-radio" et décochez-les
+       const radioInputs = document.querySelectorAll(
+         'input[type="radio"][name="table-radio"]'
+       );
+       radioInputs.forEach((input) => {
+         input.checked = false;
+       });
+     }
+
+  }, [users, isSelected]);
+
   const data = useMemo(() => dataImport, [dataImport]);
+
   const CustomCell = useCallback(
     ({ row }) => {
-      console.log(row);
       return (
         <input
           type="radio"
           name="table-radio"
           id={row.original.id}
           data-id={row.original.id}
+          value={row.original.id}
           onClick={(e) => {
             setEmployedSelected(e.target.dataset.id);
             dispatch(setIsSelected(true));
+            console.log(e.target.checked);
+            console.log(isSelected);
           }}
         />
       );
